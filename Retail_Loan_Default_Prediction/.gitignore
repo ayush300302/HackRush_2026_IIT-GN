@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data (we don't want to commit 2.26M row datasets!)
+data/
+*.csv
+*.parquet
+
+# Models
+models/
+*.pkl
+*.h5
+*.joblib

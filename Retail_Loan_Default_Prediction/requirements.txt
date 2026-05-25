@@ -1,0 +1,34 @@
+# Data Processing
+pandas
+polars
+pyarrow
+numpy
+
+# Machine Learning
+scikit-learn
+lightgbm
+xgboost
+imbalanced-learn
+
+# Hyperparameter Tuning & Tracking
+optuna
+mlflow
+
+# Visualization & Interpretability
+matplotlib
+seaborn
+plotly
+shap
+
+# Deployment
+fastapi
+uvicorn
+pydantic
+streamlit
+
+# Development Tools
+jupyterlab
+notebook
+black
+ruff
+pytest

@@ -1,0 +1,14 @@
+# Data Loading & Processing
+pandas
+numpy
+pyarrow
+
+# Machine Learning & Serialization
+lightgbm
+scikit-learn
+joblib
+
+# Visualization & Explainability
+plotly
+shap
+streamlit
