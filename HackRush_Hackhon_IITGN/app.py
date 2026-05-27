@@ -214,30 +214,6 @@ else:
                 
             st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
             
-            # Collapsible Advanced Section
-            with st.expander("🛠️ Advanced Credit Bureau Metrics"):
-                st.write("Credit score parameters (pre-filled with training medians, monetary items in ₹).")
-                col_adv1, col_adv2, col_adv3 = st.columns(3)
-                
-                with col_adv1:
-                    open_acc = st.number_input("Open Credit Accounts", min_value=0, max_value=100, value=int(medians.get('open_acc', 11)))
-                    total_acc = st.number_input("Total Credit Accounts", min_value=0, max_value=150, value=int(medians.get('total_acc', 24)))
-                    
-                    default_revol_bal_inr = int(medians.get('revol_bal', 11000) * CONVERSION_RATE)
-                    revol_bal_inr = st.number_input("Revolving Balance (₹)", min_value=0, max_value=50000000, value=default_revol_bal_inr)
-                    revol_util = st.slider("Revolving Utilization (%)", 0.0, 150.0, float(medians.get('revol_util', 50.0)))
-                    
-                with col_adv2:
-                    delinq_2yrs = st.number_input("Delinquencies (Last 2 Years)", min_value=0, max_value=30, value=int(medians.get('delinq_2yrs', 0)))
-                    inq_last_6mths = st.number_input("Inquiries (Last 6 Months)", min_value=0, max_value=10, value=int(medians.get('inq_last_6mths', 0)))
-                    pub_rec = st.number_input("Public Derogatory Records", min_value=0, max_value=20, value=int(medians.get('pub_rec', 0)))
-                    pub_rec_bankruptcies = st.number_input("Public Bankruptcies", min_value=0, max_value=10, value=int(medians.get('pub_rec_bankruptcies', 0)))
-                    
-                with col_adv3:
-                    initial_list_status_options = sorted(list(cat_mappings['initial_list_status']['freq_map'].keys()))
-                    initial_list_status = st.selectbox("Initial List Status", initial_list_status_options)
-                    tax_liens = st.number_input("Tax Liens", min_value=0, max_value=20, value=int(medians.get('tax_liens', 0)))
-                    
             submit_button = st.form_submit_button("Evaluate Loan Application", type="primary")
             
         # 4. Input Processing & Scoring
@@ -246,7 +222,6 @@ else:
             loan_amnt_usd = float(loan_amnt_inr / CONVERSION_RATE)
             annual_inc_usd = float(annual_inc_inr / CONVERSION_RATE)
             installment_usd = float(installment_inr / CONVERSION_RATE)
-            revol_bal_usd = float(revol_bal_inr / CONVERSION_RATE)
             
             # Start vector with features medians
             input_row = medians.copy()
@@ -266,17 +241,6 @@ else:
             # Installment-to-income ratio (Monthly installment / Monthly income)
             monthly_income_usd = annual_inc_usd / 12.0
             input_row['installment_to_income_ratio'] = float(installment_usd / (monthly_income_usd + 1e-5))
-            
-            # Insert advanced inputs
-            input_row['open_acc'] = float(open_acc)
-            input_row['total_acc'] = float(total_acc)
-            input_row['revol_bal'] = revol_bal_usd
-            input_row['revol_util'] = float(revol_util)
-            input_row['delinq_2yrs'] = float(delinq_2yrs)
-            input_row['inq_last_6mths'] = float(inq_last_6mths)
-            input_row['pub_rec'] = float(pub_rec)
-            input_row['pub_rec_bankruptcies'] = float(pub_rec_bankruptcies)
-            input_row['tax_liens'] = float(tax_liens)
             
             # Clip outliers using winsorization limits
             for col in winsorize_limits:
